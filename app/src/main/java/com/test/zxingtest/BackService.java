@@ -19,16 +19,25 @@ import android.os.Binder;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
+import android.os.Messenger;
 import android.util.Log;
 import android.view.Surface;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.Result;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Hashtable;
 
 /**
  * Author: 小康康
@@ -41,7 +50,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
         public void handleMessage(Message msg) {
         }
     };
-
+    private boolean successAnaylize;
     public ServiceBinder mBinder = new ServiceBinder();
     public class ServiceBinder extends Binder{
         public BackService getService(){
@@ -59,7 +68,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
         super.onCreate();
 
         mWindowManager = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
-        //Toast.makeText(getApplicationContext(),"后台服务启动",Toast.LENGTH_SHORT);
+        //Toast.makeText(getApplicationContext(),"后台服务启动",Toast.LENGTH_SHORT).show();
         Log.i("a", "后台服务启动");
         ShakeListener shakeListener = new ShakeListener(this);//创建一个对象
         shakeListener.setOnShakeListener(this);
@@ -69,12 +78,20 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
     @Override
     public void onShake() {
         //摇晃时触发的事件
-            Toast.makeText(getApplicationContext(),"摇晃了手机，启动截图",Toast.LENGTH_SHORT);
+        if (Looper.myLooper() == null)
+        {
+            Looper.prepare();
+        }
+            //Toast.makeText(getApplicationContext(),"摇晃了手机，启动截图",Toast.LENGTH_SHORT).show();
+
             Log.i("a","摇晃");
 
-        Intent screenshot = new Intent(this, TakeScreenShotActivity.class);
+       Intent screenshot = new Intent(this, TakeScreenShotActivity.class);
         screenshot.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(screenshot);
+      startActivity(screenshot);
+       // OrdinaryScreenShotTaskPacked();
+        Looper.loop();
+
     }
 
 
@@ -93,9 +110,15 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
 
         if(result){
             // 这里可以加入 MediaScanner 实施扫描代码
+
         }
 
         return result;
+    }
+    private void destoryFile() {
+        File file=new File(imageFileName);
+        if (file.exists())
+            file.delete();
     }
 
     /**
@@ -247,11 +270,12 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
 
             @Override
             protected Boolean[] doInBackground(Void... params) {
+               // Looper.prepare();
                 if(!createVirtualEnvironment || mImageReader == null || mVirtualDisplay == null){
                     return null;
                 }
 
-                //截图延迟
+               // 截图延迟
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException E) {
@@ -276,7 +300,34 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
                         if (saveBitmap2File(bitmap)) { //截图保存状态分支
                             RESULTSTATUS[1] = Boolean.valueOf(true);
                             savedBitmap = bitmap;
-
+                            //截图保存成功，接下来要解析二维码
+                            Hashtable<DecodeHintType, String> hints = new Hashtable<DecodeHintType, String>();
+                            hints.put(DecodeHintType.CHARACTER_SET, "utf-8");
+                            RGBLuminanceSource rgbLuminanceSource = new RGBLuminanceSource(bitmap);
+                            //将图片转换成二进制图片
+                            BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(rgbLuminanceSource));
+                            //初始化解析对象
+                            QRCodeReader reader = new QRCodeReader();
+                            //开始解析
+                            Result result1 = null;
+                            try {
+                                result1 = reader.decode(binaryBitmap, hints);
+                            } catch (Exception e) {
+                                // TODO: handle exception
+                            }
+                            //return result;
+                            //获得了解析结果result1
+                            if (result1!=null){
+                                Log.i("解析成功",result1.getText());
+                                jumpToBrowser(result1.getText());
+                                successAnaylize=true;
+                            }
+                            else{
+//                                Looper.prepare();
+//                                Toast.makeText(getApplicationContext(),"解析失败，未找到二维码",Toast.LENGTH_SHORT).show();
+//                                Looper.loop();
+                                successAnaylize=false;
+                            }
                         } else {
                             RESULTSTATUS[1] = Boolean.valueOf(false);
                         }
@@ -286,19 +337,22 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
                 } else {
                     RESULTSTATUS = null;
                 }
-
+                destoryFile();
+                //Looper.loop();
                 return RESULTSTATUS;
             }
 
             @Override
             protected void onPostExecute(Boolean[] result) {
                 super.onPostExecute(result);
-
+                if (successAnaylize==false){
+                    Toast.makeText(getApplicationContext(),"解析失败，未找到二维码或二维码失效",Toast.LENGTH_SHORT).show();
+                }
 
                 if (result == null) {
 
 
-                    Toast.makeText(getApplicationContext(),"截图失败",Toast.LENGTH_SHORT);
+                    Toast.makeText(getApplicationContext(),"解析失败，请确认开启了存储权限",Toast.LENGTH_SHORT).show();
 
                     tearDownMediaProjection();
                     return;
@@ -306,13 +360,13 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
 
                 if (!result[1]) {
 
-                    Toast.makeText(getApplicationContext(),"截图保存时失败",Toast.LENGTH_SHORT);
+                    Toast.makeText(getApplicationContext(),"解析失败，请确认开启了存储权限",Toast.LENGTH_SHORT).show();
 
                     tearDownMediaProjection();
                     return;
                 }
 
-                Toast.makeText(getApplicationContext(),"截图成功了！",Toast.LENGTH_SHORT);
+                //Toast.makeText(getApplicationContext(),"截图成功了！",Toast.LENGTH_SHORT).show();
 
                 tearDownMediaProjection();
 
@@ -359,6 +413,11 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
     }
     public Intent getScreenShotResultData(){
         return mScreenShotResultData;
+    }
+    public void jumpToBrowser(String url){//给定url，通过浏览器跳转到相应页面
+        Uri uri=Uri.parse(url);
+        Intent intent=new Intent(Intent.ACTION_VIEW,uri);
+        startActivity(intent);
     }
 
 }

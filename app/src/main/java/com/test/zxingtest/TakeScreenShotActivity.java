@@ -10,6 +10,7 @@ import android.media.projection.MediaProjectionManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ public class TakeScreenShotActivity extends AppCompatActivity {
     private Intent serviceIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -53,6 +55,7 @@ public class TakeScreenShotActivity extends AppCompatActivity {
         //询问用户截图吗？
         startActivityForResult(mMediaProjectionManager.createScreenCaptureIntent(),
                                TAKE_SCREEN_SHOT_REQUEST_CODE);
+
     }
 
     //获得 MediaProjectionManager 对象
@@ -79,7 +82,7 @@ public class TakeScreenShotActivity extends AppCompatActivity {
 
                     RESULT_CODE = resultCode;
                     RESULT_DATA = data;
-
+                    Toast.makeText(getApplicationContext(),"正在进行二维码解析",Toast.LENGTH_SHORT).show();
                     new AsyncTask<Void, Void, Void>(){
 
                         @Override
@@ -99,12 +102,14 @@ public class TakeScreenShotActivity extends AppCompatActivity {
                         @Override
                         protected void onPostExecute(Void result) {
                             mService.OrdinaryScreenShotTaskPacked();
+
                         };
 
                     }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                 }else if (resultCode == RESULT_CANCELED) {
-                    Toast.makeText(getApplicationContext(), "截图请求被取消", Toast.LENGTH_SHORT);
+                   // Looper.prepare();
+                    Toast.makeText(getApplicationContext(), "截图请求被取消", Toast.LENGTH_SHORT).show();
 
                     finish();
                 }
