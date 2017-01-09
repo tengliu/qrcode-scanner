@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <!-- unavailable in API 23 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS"/>
@@ -85,6 +87,14 @@
                   android:excludeFromRecents="true">
 
         </activity>
+        <activity
+            android:name=".ThreadActivity" >
+
+        </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

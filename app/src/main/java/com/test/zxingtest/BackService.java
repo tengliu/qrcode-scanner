@@ -3,6 +3,7 @@ package com.test.zxingtest;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.hardware.display.DisplayManager;
@@ -57,7 +58,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
             return BackService.this;
         }
     }
-
+    private SharedPreferences sharedPreferences=null;
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
@@ -77,6 +78,13 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
 
     @Override
     public void onShake() {
+        sharedPreferences=getApplicationContext().getSharedPreferences("enableService",0);
+        if(sharedPreferences.getBoolean("enableService",false)==false)
+        {
+            Intent intent=new Intent(this,BackService.class);
+            getApplicationContext().stopService(intent);
+        }
+        else{
         //摇晃时触发的事件
         if (Looper.myLooper() == null)
         {
@@ -91,6 +99,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
       startActivity(screenshot);
        // OrdinaryScreenShotTaskPacked();
         Looper.loop();
+        }
 
     }
 

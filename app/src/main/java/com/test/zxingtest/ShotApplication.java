@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.projection.MediaProjectionManager;
 
+import com.avos.avoscloud.AVOSCloud;
+
 /**
  * Created by Dylan_Wang on 2015/7/28.
  */
@@ -15,6 +17,7 @@ public class ShotApplication extends Application {
     private SharedPreferences sharedPreferences;
     @Override
     public void onCreate() {
+        AVOSCloud.initialize(this, "2GBuCiDCqgLoeinv07LrUxWW-gzGzoHsz", "tIiw9lvVLImKENJ0VjGj3B3u");
         //根据用户设置决定是否自启动服务
         sharedPreferences=this.getSharedPreferences("enableService",0);
         Intent intent=new Intent(this,BackService.class);
