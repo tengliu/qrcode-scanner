@@ -2,30 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:textSize="16sp"
-        />
-    <Button
-        android:id="@+id/btn_create"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="生成二维码"
-        android:textSize="16sp" />
-    <Button
-        android:id="@+id/btn_scanner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="二维码扫描"
-        android:textSize="16sp" />
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <ImageView
-        android:id="@+id/image"
+    <Switch
+        android:text="开启摇一摇解析二维码"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:src="@drawable/test"
-        android:scaleType="centerCrop"/>
+        android:id="@+id/switch1"
+        android:layout_weight="0.24" />
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.test.zxingtest;
 
 import android.app.Application;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.projection.MediaProjectionManager;
 
 /**
@@ -11,11 +12,19 @@ public class ShotApplication extends Application {
     private int result;
     private Intent intent;
     private MediaProjectionManager mMediaProjectionManager;
-
+    private SharedPreferences sharedPreferences;
     @Override
     public void onCreate() {
+        //根据用户设置决定是否自启动服务
+        sharedPreferences=this.getSharedPreferences("enableService",0);
         Intent intent=new Intent(this,BackService.class);
+        if (sharedPreferences.getBoolean("enableService",false)==true){
         startService(intent);
+        }
+        else {
+            stopService(intent);
+        }
+
     }
 
     public int getResult(){
