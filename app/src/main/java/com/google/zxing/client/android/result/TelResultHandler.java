@@ -21,7 +21,7 @@ import android.telephony.PhoneNumberUtils;
 
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.TelParsedResult;
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 /**
  * Offers relevant actions for telephone numbers.

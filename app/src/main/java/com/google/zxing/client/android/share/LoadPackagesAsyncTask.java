@@ -28,7 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 import java.util.ArrayList;
 import java.util.Collections;

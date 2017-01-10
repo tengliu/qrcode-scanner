@@ -37,7 +37,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.android.Contents;
 import com.google.zxing.client.android.FinishListener;
 import com.google.zxing.client.android.Intents;
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;

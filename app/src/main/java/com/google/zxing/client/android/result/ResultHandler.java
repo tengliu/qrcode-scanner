@@ -36,7 +36,7 @@ import com.google.zxing.client.android.book.SearchBookContentsActivity;
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.ParsedResultType;
 import com.google.zxing.client.result.ResultParser;
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

@@ -63,7 +63,7 @@ import com.google.zxing.client.android.result.ResultHandler;
 import com.google.zxing.client.android.result.ResultHandlerFactory;
 import com.google.zxing.client.android.result.supplement.SupplementalInfoRetriever;
 import com.google.zxing.client.android.share.ShareActivity;
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 import java.io.IOException;
 import java.text.DateFormat;

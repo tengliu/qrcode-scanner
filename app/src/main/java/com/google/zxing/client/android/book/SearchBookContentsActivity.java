@@ -33,7 +33,7 @@ import android.widget.TextView;
 import com.google.zxing.client.android.HttpHelper;
 import com.google.zxing.client.android.Intents;
 import com.google.zxing.client.android.LocaleManager;
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -20,7 +20,7 @@ import android.app.Activity;
 
 import com.google.zxing.client.result.GeoParsedResult;
 import com.google.zxing.client.result.ParsedResult;
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 /**
  * Handles geographic coordinates (typically encoded as geo: URLs).

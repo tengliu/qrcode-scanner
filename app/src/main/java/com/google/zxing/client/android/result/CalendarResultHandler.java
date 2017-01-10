@@ -23,7 +23,7 @@ import android.util.Log;
 
 import com.google.zxing.client.result.CalendarParsedResult;
 import com.google.zxing.client.result.ParsedResult;
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 import java.text.DateFormat;
 import java.util.Date;

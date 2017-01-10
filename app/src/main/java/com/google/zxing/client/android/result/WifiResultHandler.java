@@ -27,7 +27,7 @@ import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.wifi.WifiConfigManager;
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.WifiParsedResult;
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 /**
  * Handles wifi access information.

@@ -26,7 +26,7 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 import java.io.Closeable;
 import java.io.IOException;

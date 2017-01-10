@@ -26,7 +26,7 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 /**
  * A custom adapter designed to fetch bookmarks from a cursor. Before Honeycomb we used

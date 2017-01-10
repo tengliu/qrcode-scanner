@@ -28,7 +28,7 @@ import android.view.View;
 
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.camera.CameraManager;
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -25,7 +25,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 import java.net.URI;
 import java.net.URISyntaxException;

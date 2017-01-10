@@ -20,7 +20,7 @@ import android.app.Activity;
 
 import com.google.zxing.Result;
 import com.google.zxing.client.result.ParsedResult;
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 /**
  * This class handles TextParsedResult as well as unknown formats. It's the fallback handler.

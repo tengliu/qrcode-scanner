@@ -25,7 +25,7 @@ import android.text.style.StyleSpan;
 
 import com.google.zxing.client.result.AddressBookParsedResult;
 import com.google.zxing.client.result.ParsedResult;
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 import java.text.DateFormat;
 import java.text.ParseException;

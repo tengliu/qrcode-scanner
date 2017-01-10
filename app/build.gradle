@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
     defaultConfig {
-        applicationId "com.test.zxingtest"
+        applicationId "com.sduwh.qrcodeScanner"
         minSdkVersion 21
         targetSdkVersion 22
         versionCode 1
@@ -34,6 +34,6 @@ dependencies {
     compile files('libs/fastjson.jar')
     compile files('libs/okhttp-2.6.0-leancloud.jar')
     compile files('libs/okio-1.6.0-leancloud.jar')
-    compile files('libs/android-support-v4.jar')
+    //compile files('libs/android-support-v4.jar')
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
 }

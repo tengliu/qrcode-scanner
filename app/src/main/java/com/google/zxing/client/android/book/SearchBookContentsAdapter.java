@@ -22,7 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 import java.util.List;
 

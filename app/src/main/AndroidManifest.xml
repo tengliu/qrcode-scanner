@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.test.zxingtest">
+          package="com.sduwh.qrcodeSacnner">
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -53,14 +53,15 @@
 
 
     <application
-        android:name=".ShotApplication"
+        android:name="com.sduwh.qrcodeSacnner.ShotApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.sduwh.qrcodeSacnner.MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleInstance"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -74,21 +75,22 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".BootCompletedReceiver">
+        <receiver android:name="com.sduwh.qrcodeSacnner.BootCompletedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
 
-        <service android:name=".BackService">
+        <service android:name="com.sduwh.qrcodeSacnner.BackService">
         </service>
 
-        <activity android:name=".TakeScreenShotActivity"
+        <activity android:name="com.sduwh.qrcodeSacnner.TakeScreenShotActivity"
                   android:excludeFromRecents="true">
 
         </activity>
         <activity
-            android:name=".ThreadActivity" >
+            android:name="com.sduwh.qrcodeSacnner.ThreadActivity"
+            android:launchMode="singleInstance">
 
         </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->

@@ -37,7 +37,7 @@ import android.widget.ListView;
 
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.Intents;
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 public final class HistoryActivity extends ListActivity {
 

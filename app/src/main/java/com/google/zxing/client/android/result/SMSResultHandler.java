@@ -21,7 +21,7 @@ import android.telephony.PhoneNumberUtils;
 
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.SMSParsedResult;
-import com.test.zxingtest.R;
+import com.sduwh.qrcodeSacnner.R;
 
 /**
  * Handles SMS addresses, offering a choice of composing a new SMS or MMS message.

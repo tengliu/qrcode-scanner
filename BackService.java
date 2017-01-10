@@ -1,4 +1,4 @@
-package com.test.zxingtest;
+package com.sduwh.qrcodeSacnner;
 
 import android.app.Service;
 import android.content.Context;
