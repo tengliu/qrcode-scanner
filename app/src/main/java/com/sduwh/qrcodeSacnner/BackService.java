@@ -40,23 +40,25 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Hashtable;
 
+import static java.lang.Math.E;
 
 
 public class BackService extends Service implements ShakeListener.OnShakeListener {
-
+    private SharedPreferences sharedPreferences=null;
+    private boolean invalidURl=false;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
         }
     };
-    private boolean successAnaylize;
+
     public ServiceBinder mBinder = new ServiceBinder();
     public class ServiceBinder extends Binder{
         public BackService getService(){
             return BackService.this;
         }
     }
-    private SharedPreferences sharedPreferences=null;
+
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
@@ -67,7 +69,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
         super.onCreate();
 
         mWindowManager = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
-        //Toast.makeText(getApplicationContext(),"后台服务启动",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),"后台服务启动",Toast.LENGTH_SHORT);
         Log.i("a", "后台服务启动");
         ShakeListener shakeListener = new ShakeListener(this);//创建一个对象
         shakeListener.setOnShakeListener(this);
@@ -76,6 +78,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
 
     @Override
     public void onShake() {
+        //摇晃时触发的事件
         sharedPreferences=getApplicationContext().getSharedPreferences("enableService",0);
         if(sharedPreferences.getBoolean("enableService",false)==false||isScreenOn(getApplicationContext())==false)
         {
@@ -83,20 +86,20 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
             getApplicationContext().stopService(intent);
         }
         else{
-        //摇晃时触发的事件
-        if (Looper.myLooper() == null)
-        {
-            Looper.prepare();
-        }
+            //摇晃时触发的事件
+            if (Looper.myLooper() == null)
+            {
+                Looper.prepare();
+            }
             //Toast.makeText(getApplicationContext(),"摇晃了手机，启动截图",Toast.LENGTH_SHORT).show();
 
             Log.i("a","摇晃");
 
-       Intent screenshot = new Intent(this, TakeScreenShotActivity.class);
-        screenshot.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-      startActivity(screenshot);
-       // OrdinaryScreenShotTaskPacked();
-        Looper.loop();
+            Intent screenshot = new Intent(this, TakeScreenShotActivity.class);
+            screenshot.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(screenshot);
+            // OrdinaryScreenShotTaskPacked();
+            Looper.loop();
         }
 
     }
@@ -105,27 +108,24 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
     private String imageFileName;
 
     // 保存 Bitmap 对象为截图文件
-     private boolean saveBitmap2File(Bitmap bmp) throws IOException {
+    private boolean saveBitmap2File(Bitmap bmp) throws IOException {
         String APPENDSYMBOL = "/";
         File childFolder = new File(Environment.getExternalStorageDirectory() + APPENDSYMBOL + Environment.DIRECTORY_DCIM  + APPENDSYMBOL + "Screenshots");
 
-         // 产生图片名称和路径
+        // 产生图片名称和路径
         imageFileName = childFolder.getAbsolutePath() + APPENDSYMBOL + String.valueOf(System.currentTimeMillis()) + ".png";
 
-         // 保存为 PNG 图片
+        // 保存为 PNG 图片
         boolean result = save2PNG(bmp, imageFileName);// 输出至文件
 
         if(result){
             // 这里可以加入 MediaScanner 实施扫描代码
 
+
+
         }
 
         return result;
-    }
-    private void destoryFile() {
-        File file=new File(imageFileName);
-        if (file.exists())
-            file.delete();
     }
 
     /**
@@ -178,6 +178,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
             private MediaProjection mMediaProjection;
             private VirtualDisplay mVirtualDisplay;
             private ImageReader mImageReader;
+            private boolean successAnaylize=false;
 
             // 创建 VirtualDisplay 对象
             private VirtualDisplay createVirtualDisplay() {
@@ -187,8 +188,8 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
                 }
 
                 return mMediaProjection.createVirtualDisplay(BackService.class.getSimpleName(), ScreenWidth, ScreenHeight, mScreenDensity,
-                                                             DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, SURFACE, null /* Callbacks */,
-                                                             mHandler /* Handler */);
+                        DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, SURFACE, null /* Callbacks */,
+                        mHandler /* Handler */);
             }
 
             // 初始化环境
@@ -230,7 +231,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
 
                 if (OriginalVolume != 0) {
                     MediaPlayer mMediaPlayer = MediaPlayer.create(BackService.this,
-                                                                  Uri.parse("file:///system/media/audio/ui/camera_click.ogg"));
+                            Uri.parse("file:///system/media/audio/ui/camera_click.ogg"));
                     mMediaPlayer.start();
                 }
             }
@@ -265,7 +266,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
                 Handler ScreenShotSound = new Handler();
                 ScreenShotSound.postDelayed(new Runnable() {
                     public void run() {
-                       // playScreenShotSound();
+                        playScreenShotSound();
                     }
                 }, 300);
 
@@ -277,12 +278,11 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
 
             @Override
             protected Boolean[] doInBackground(Void... params) {
-               // Looper.prepare();
                 if(!createVirtualEnvironment || mImageReader == null || mVirtualDisplay == null){
                     return null;
                 }
 
-               // 截图延迟
+                //截图延迟
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException E) {
@@ -317,6 +317,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
                             QRCodeReader reader = new QRCodeReader();
                             //开始解析
                             Result result1 = null;
+                            //tearDownMediaProjection();
                             try {
                                 result1 = reader.decode(binaryBitmap, hints);
                             } catch (Exception e) {
@@ -324,15 +325,12 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
                             }
                             //return result;
                             //获得了解析结果result1
-                            if (result1!=null){
-                                Log.i("解析成功",result1.getText());
+                            if (result1!=null) {
+                                Log.i("a", result1.getText());
                                 jumpToBrowser(result1.getText());
                                 successAnaylize=true;
                             }
-                            else{
-//                                Looper.prepare();
-//                                Toast.makeText(getApplicationContext(),"解析失败，未找到二维码",Toast.LENGTH_SHORT).show();
-//                                Looper.loop();
+                            else {
                                 successAnaylize=false;
                             }
                         } else {
@@ -344,28 +342,24 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
                 } else {
                     RESULTSTATUS = null;
                 }
-                Thread thread=new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        destoryFile();
-                    }
-                });
-              thread.run();
-                //Looper.loop();
+                destoryFile();
                 return RESULTSTATUS;
             }
 
             @Override
             protected void onPostExecute(Boolean[] result) {
                 super.onPostExecute(result);
+                if (invalidURl==true){
+                    Toast.makeText(getApplicationContext(),"二维码网址失效",Toast.LENGTH_SHORT).show();
+                }
                 if (successAnaylize==false){
-                    Toast.makeText(getApplicationContext(),"解析失败，未找到二维码或二维码失效",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"未找到二维码,请把二维码移至屏幕中央",Toast.LENGTH_SHORT).show();
                 }
 
                 if (result == null) {
 
 
-                    Toast.makeText(getApplicationContext(),"解析失败，请确认开启了存储权限",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"截图失败",Toast.LENGTH_SHORT).show();
 
                     tearDownMediaProjection();
                     return;
@@ -373,7 +367,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
 
                 if (!result[1]) {
 
-                    Toast.makeText(getApplicationContext(),"解析失败，请确认开启了存储权限",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"截图保存时失败",Toast.LENGTH_SHORT).show();
 
                     tearDownMediaProjection();
                     return;
@@ -427,13 +421,24 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
     public Intent getScreenShotResultData(){
         return mScreenShotResultData;
     }
+
     public void jumpToBrowser(String url){//给定url，通过浏览器跳转到相应页面
         Uri uri=Uri.parse(url);
-        Intent intent=new Intent(Intent.ACTION_VIEW,uri);
-        Looper.prepare();
-        Toast.makeText(getApplicationContext(),"解析成功，正在跳转网页",Toast.LENGTH_SHORT).show();
-        startActivity(intent);
-        Looper.loop();
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//        Looper.prepare();
+//        Toast.makeText(getApplicationContext(),"解析成功，正在跳转网页",Toast.LENGTH_SHORT).show();
+
+            startActivity(intent);
+        }catch (Exception e) {
+            invalidURl = true;
+        }
+//        Looper.loop();
+    }
+    private void destoryFile() {
+        File file=new File(imageFileName);
+        if (file.exists())
+            file.delete();
     }
     public boolean isScreenOn(Context context) {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
