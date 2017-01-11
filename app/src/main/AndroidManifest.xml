@@ -91,7 +91,7 @@
                     <action android:name="com.scytec.datamobile.vd.gui.android.AppPreferenceActivity" />
                     <category android:name="android.intent.category.DEFAULT" />
                 </intent-filter>
-           
+
         </activity>
         <activity
             android:name="com.sduwh.qrcodeSacnner.ThreadActivity"

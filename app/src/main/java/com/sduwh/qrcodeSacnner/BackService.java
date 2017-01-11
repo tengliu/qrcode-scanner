@@ -423,14 +423,13 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
     }
 
     public void jumpToBrowser(String url){//给定url，通过浏览器跳转到相应页面
+        if (!url.startsWith("http://") && !url.startsWith("https://"))
+            url = "http://" + url;
         Uri uri=Uri.parse(url);
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//        Looper.prepare();
-//        Toast.makeText(getApplicationContext(),"解析成功，正在跳转网页",Toast.LENGTH_SHORT).show();
-
             startActivity(intent);
-        }catch (Exception e) {
+        }catch (android.content.ActivityNotFoundException e) {
             invalidURl = true;
         }
 //        Looper.loop();
