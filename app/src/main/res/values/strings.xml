@@ -15,7 +15,7 @@
  limitations under the License.
  -->
 <resources>
-    <string name="app_name">CaptureScreen</string>
+    <string name="app_name">QuickQR</string>
     <string name="app_picker_name">Applications</string>
     <string name="bookmark_picker_name">Bookmarks</string>
     <string name="button_add_calendar">Add to calendar</string>
