@@ -17,14 +17,13 @@ public class ShotApplication extends Application {
     public void onCreate() {
         AVOSCloud.initialize(this, "2GBuCiDCqgLoeinv07LrUxWW-gzGzoHsz", "tIiw9lvVLImKENJ0VjGj3B3u");
         //根据用户设置决定是否自启动服务
-        sharedPreferences=this.getSharedPreferences("enableService",0);
+
         Intent intent=new Intent(this,BackService.class);
-        if (sharedPreferences.getBoolean("enableService",false)==true){
+
         startService(intent);
-        }
-        else {
-            stopService(intent);
-        }
+
+
+
 
     }
 

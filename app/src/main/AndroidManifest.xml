@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <!-- unavailable in API 23 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS"/>
@@ -81,8 +81,10 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="com.sduwh.qrcodeSacnner.BackService">
+        <service android:name="com.sduwh.qrcodeSacnner.BackService"
+            android:enabled="true">
         </service>
+
 
         <activity android:name="com.sduwh.qrcodeSacnner.TakeScreenShotActivity"
                   android:excludeFromRecents="true">

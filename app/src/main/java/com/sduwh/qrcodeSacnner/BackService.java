@@ -100,7 +100,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
             startActivity(screenshot);
             // OrdinaryScreenShotTaskPacked();
             Looper.loop();
-        }
+      }
 
     }
 
@@ -266,7 +266,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
                 Handler ScreenShotSound = new Handler();
                 ScreenShotSound.postDelayed(new Runnable() {
                     public void run() {
-                        playScreenShotSound();
+                       // playScreenShotSound();
                     }
                 }, 300);
 
@@ -353,7 +353,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
                     Toast.makeText(getApplicationContext(),"二维码网址失效",Toast.LENGTH_SHORT).show();
                 }
                 if (successAnaylize==false){
-                    Toast.makeText(getApplicationContext(),"未找到二维码,请把二维码移至屏幕中央",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"未找到二维码或二维码过期,请把二维码移至屏幕中央",Toast.LENGTH_SHORT).show();
                 }
 
                 if (result == null) {
@@ -428,6 +428,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
         Uri uri=Uri.parse(url);
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }catch (android.content.ActivityNotFoundException e) {
             invalidURl = true;
