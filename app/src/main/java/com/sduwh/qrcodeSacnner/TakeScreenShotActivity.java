@@ -107,7 +107,6 @@ public class TakeScreenShotActivity extends AppCompatActivity {
                 }else if (resultCode == RESULT_CANCELED) {
                    // Looper.prepare();
                     Toast.makeText(getApplicationContext(), "截图请求被取消", Toast.LENGTH_SHORT).show();
-
                     finish();
                 }
 
@@ -125,7 +124,6 @@ public class TakeScreenShotActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-
         unbindService(mServiceConnection); //解绑服务
         super.onDestroy();
     }

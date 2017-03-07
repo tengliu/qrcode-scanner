@@ -75,6 +75,12 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
         shakeListener.setOnShakeListener(this);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Intent intent=new Intent(getApplicationContext(),BackService.class);
+        startService(intent);
+    }
 
     @Override
     public void onShake() {
@@ -128,6 +134,11 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
         return result;
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY;
+    }
+
     /**
      * 指定目录写入文件内容 PNG
      *
@@ -161,16 +172,15 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
 
     // 屏幕截图（异步封装的内部方法）
     private AsyncTask<Void, Void, Boolean[]> mOrdinaryScreenShotTask; //异步实例
-    public void OrdinaryScreenShotTaskPacked(){
 
+
+    public void OrdinaryScreenShotTaskPacked(){
         //检测异步任务同时运行
         if(mOrdinaryScreenShotTask != null
                 && mOrdinaryScreenShotTask.getStatus() == AsyncTask.Status.RUNNING){
             return;
         }
-
         mOrdinaryScreenShotTask = new AsyncTask<Void, Void, Boolean[]>(){
-
             private int ScreenWidth;
             private int ScreenHeight;
             private int mScreenDensity;
@@ -179,14 +189,12 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
             private VirtualDisplay mVirtualDisplay;
             private ImageReader mImageReader;
             private boolean successAnaylize=false;
-
             // 创建 VirtualDisplay 对象
             private VirtualDisplay createVirtualDisplay() {
                 Surface SURFACE = mImageReader.getSurface();
                 if(SURFACE == null){
                     return null;
                 }
-
                 return mMediaProjection.createVirtualDisplay(BackService.class.getSimpleName(), ScreenWidth, ScreenHeight, mScreenDensity,
                         DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, SURFACE, null /* Callbacks */,
                         mHandler /* Handler */);
@@ -345,6 +353,7 @@ public class BackService extends Service implements ShakeListener.OnShakeListene
                 destoryFile();
                 return RESULTSTATUS;
             }
+
 
             @Override
             protected void onPostExecute(Boolean[] result) {
